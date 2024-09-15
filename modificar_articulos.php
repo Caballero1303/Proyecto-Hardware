@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="latitude.ico">
-    <link rel="stylesheet" type="text/css" href="css/registros.css">
+    <link rel="stylesheet" type="text/css" href="css/modificar.css">
     <title>Editar Equipo</title>
 </head>
 <body>
