@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="icon" type="image/x-icon" href="img/latitude.ico">
-    <link rel="stylesheet" type="text/css" href="css/equipos.css">
+    <link rel="stylesheet" type="text/css" href="css/registros.css">
     <title>Consulta de Equipos</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/equipos.js"></script>
@@ -94,10 +94,10 @@
             $imagen_codificada = base64_encode($imagen_binaria);
         
             // Mostrar la imagen en la tabla
-            echo "<td class='registro'><img src='data:image/jpeg;base64, $imagen_codificada' alt='Imagen del equipo' width='100' height='100'></td>";
+            echo "<td class='registro'><img src='data:image/jpeg;base64, $imagen_codificada' alt='Imagen del equipo' class='img-art'></td>";
         
-            echo "<td><a class='button edit' href='modificar_articulos.php?id=" . $row["ID_ART"] . "'><img src='img/editar.jpeg' width='25' height='25'/></a></td>";
-            echo "<td><a class='button delete' onclick='eliminarRegistro(\"" . $row["ID_ART"] . "\")'><img src='img/eliminar.jpeg' width='25' height='25'/></a></td>";
+            echo "<td><a class='button edit' href='modificar_articulos.php?id=" . $row["ID_ART"] . "'><img class='boton-img' src='img/editar.png' width='25' height='25'/></a></td>";
+            echo "<td><a class='button delete' onclick='eliminarRegistro(\"" . $row["ID_ART"] . "\")'><img class='boton-img' src='img/eliminar.png' width='25' height='25'/></a></td>";
             
             echo "</tr>";
         }
