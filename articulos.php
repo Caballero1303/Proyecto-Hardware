@@ -71,8 +71,13 @@
 
     if (isset($_GET["filtro"])) {
         $filtro = $_GET["filtro"];
-        $sql .= " WHERE ID_ART LIKE '%$filtro%' OR MARCA_ART LIKE '%$filtro%'";
-    }
+        $sql .= " WHERE ID_ART LIKE '%$filtro%' 
+                  OR TIPO_ART LIKE '%$filtro%' 
+                  OR NOMBRE_ART LIKE '%$filtro%' 
+                  OR MARCA_ART LIKE '%$filtro%' 
+                  OR MODELO_ART LIKE '%$filtro%' 
+                  OR PRECIO_ART LIKE '%$filtro%'";
+    }    
 
     $result = $conn->query($sql);
 
@@ -96,8 +101,8 @@
             // Mostrar la imagen en la tabla
             echo "<td class='registro'><img src='data:image/jpeg;base64, $imagen_codificada' alt='Imagen del equipo' class='img-art'></td>";
         
-            echo "<td><a class='button edit' href='modificar_articulos.php?id=" . $row["ID_ART"] . "'><img class='boton-img' src='img/editar.png' width='25' height='25'/></a></td>";
-            echo "<td><a class='button delete' onclick='eliminarRegistro(\"" . $row["ID_ART"] . "\")'><img class='boton-img' src='img/eliminar.png' width='25' height='25'/></a></td>";
+            echo "<td><a class='button edit' href='modificar_articulos.php?id=" . $row["ID_ART"] . "'><img class='boton-img' src='img/editar.png'/></a></td>";
+            echo "<td><a class='button delete' onclick='eliminarRegistro(\"" . $row["ID_ART"] . "\")'><img class='boton-img' src='img/eliminar.png'/></a></td>";
             
             echo "</tr>";
         }
