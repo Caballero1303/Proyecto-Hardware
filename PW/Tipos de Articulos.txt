@@ -1,0 +1,10 @@
+Tipos de Articulos
+- Computadoras armadas
+- CPU
+- GPU
+- Almacenamiento
+- Gabinete
+- Fuente de poder 
+- Memoria RAM
+- Placa madre
+- Enfriamento liquido 
