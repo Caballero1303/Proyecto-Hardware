@@ -43,13 +43,6 @@
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
-    
-    session_start();
-
-    if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-        header("Location: loging.php");
-        exit();
-    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_articulo"])) {
         $id_articulo = $_POST["id_articulo"];
