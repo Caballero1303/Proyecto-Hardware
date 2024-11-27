@@ -91,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check_duplicate_sql = "SELECT ID_USER FROM credenciales WHERE ID_USER = '$ID_USER'";
         $duplicate_result = $conn->query($check_duplicate_sql);
 
-
         if ($duplicate_result->num_rows > 0) {
             echo '<script>alert("El ID de artículo \'' . $ID_USER . '\' ya existe. Por favor, ingresa otro ID.");</script>';
         } else {

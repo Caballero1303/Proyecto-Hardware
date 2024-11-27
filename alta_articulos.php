@@ -48,23 +48,38 @@
 
     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" enctype="multipart/form-data">
         <div>
-            <label for="ID_USER">ID del artículo:</label>
-            <input type="text" name="ID_USER" required>
+            <label for="ID_ART">ID del artículo:</label>
+            <input type="text" name="ID_ART" required>
         </div>
 
         <div>
-            <label for="USER">Tipo de artículo:</label>
-            <input type="text" name="USER" required>
+            <label for="TIPO_ART">Tipo de artículo:</label>
+            <input type="text" name="TIPO_ART" required>
         </div>
 
         <div>
-            <label for="TIPO_USER">Nombre del artículo:</label>
-            <input type="text" name="TIPO_USER" required>
+            <label for="NOMBRE_ART">Nombre del artículo:</label>
+            <input type="text" name="NOMBRE_ART" required>
         </div>
 
         <div>
-            <label for="PASSWORD">Marca del artículo:</label>
-            <input type="text" name="PASSWORD" required>
+            <label for="MARCA_ART">Marca del artículo:</label>
+            <input type="text" name="MARCA_ART" required>
+        </div>
+
+        <div>
+            <label for="MODELO_ART">Modelo del artículo:</label>
+            <input type="text" name="MODELO_ART" required>
+        </div>
+
+        <div>
+            <label for="PRECIO_ART">Precio del artículo:</label>
+            <input type="text" name="PRECIO_ART" required>
+        </div>
+
+        <div>
+            <label for="IMG_ART">Imagen del artículo:</label>
+            <input type="file" name="IMG_ART" accept="image/*" required>
         </div>
 
         <div>
@@ -85,21 +100,28 @@ if ($conn->connect_error) {
 // Verificar si se ha enviado el formulario de ingreso
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos ingresados en el formulario
-    $ID_USER = $_POST["ID_USER"];
-    $USER = $_POST["USER"];
-    $TIPO_USER = $_POST["TIPO_USER"];
-    $PASSWORD = $_POST["PASSWORD"];
+    $ID_ART = $_POST["ID_ART"];
+    $TIPO_ART = $_POST["TIPO_ART"];
+    $NOMBRE_ART = $_POST["NOMBRE_ART"];
+    $MARCA_ART = $_POST["MARCA_ART"];
+    $MODELO_ART = $_POST["MODELO_ART"];
+    $PRECIO_ART = $_POST["PRECIO_ART"];
     
-        // Consulta SQL para verificar si el campo ID_USER está duplicado
-        $check_duplicate_sql = "SELECT ID_USER FROM credenciales WHERE ID_USER = '$ID_USER'";
+    if(isset($_FILES["IMG_ART"]) && $_FILES["IMG_ART"]["error"] == 0) {
+        // Obtener los datos binarios de la imagen
+        $imgData = file_get_contents($_FILES["IMG_ART"]["tmp_name"]);
+        $imgData = $conn->real_escape_string($imgData);
+
+        // Consulta SQL para verificar si el campo ID_ART está duplicado
+        $check_duplicate_sql = "SELECT ID_ART FROM productos WHERE ID_ART = '$ID_ART'";
         $duplicate_result = $conn->query($check_duplicate_sql);
 
         if ($duplicate_result->num_rows > 0) {
-            echo '<script>alert("El ID de artículo \'' . $ID_USER . '\' ya existe. Por favor, ingresa otro ID.");</script>';
+            echo '<script>alert("El ID de artículo \'' . $ID_ART . '\' ya existe. Por favor, ingresa otro ID.");</script>';
         } else {
             // Consulta SQL para insertar un nuevo registro en la tabla "productos"
-            $insert_sql = "INSERT INTO productos (ID_USER, USER, TIPO_USER, PASSWORD)
-                    VALUES ('$ID_USER', '$USER', '$TIPO_USER', '$PASSWORD')";
+            $insert_sql = "INSERT INTO productos (ID_ART, TIPO_ART, NOMBRE_ART, MARCA_ART, MODELO_ART, PRECIO_ART, IMG_ART)
+                    VALUES ('$ID_ART', '$TIPO_ART', '$NOMBRE_ART', '$MARCA_ART', '$MODELO_ART', '$PRECIO_ART', '$imgData')";
 
             if ($conn->query($insert_sql) === TRUE) {
                 echo '<script>alert("Registro insertado correctamente.");</script>';
@@ -108,8 +130,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>alert("Error al insertar el registro: ' . $conn->error . '");</script>';
             }
         }
+    }else {
+            echo '<script>alert("Error al cargar la imagen.");</script>';
     }
-
+}
 // Cerrar la conexión
 $conn->close();
 ?>
