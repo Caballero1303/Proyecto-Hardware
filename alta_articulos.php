@@ -103,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($conn->query($insert_sql) === TRUE) {
                 echo '<script>alert("Registro insertado correctamente.");</script>';
+                header("Location: articulos.php");
             } else {
                 echo '<script>alert("Error al insertar el registro: ' . $conn->error . '");</script>';
             }

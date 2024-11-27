@@ -91,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check_duplicate_sql = "SELECT ID_USER FROM credenciales WHERE ID_USER = '$ID_USER'";
         $duplicate_result = $conn->query($check_duplicate_sql);
 
+
         if ($duplicate_result->num_rows > 0) {
             echo '<script>alert("El ID de artículo \'' . $ID_USER . '\' ya existe. Por favor, ingresa otro ID.");</script>';
         } else {
@@ -100,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($conn->query($insert_sql) === TRUE) {
                 echo '<script>alert("Registro insertado correctamente.");</script>';
+                header("Location: credenciales.php");
             } else {
                 echo '<script>alert("Error al insertar el registro: ' . $conn->error . '");</script>';
             }
