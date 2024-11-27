@@ -17,78 +17,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $marcaArt = $_POST['marca_art'];
     $modeloArt = $_POST['modelo_art'];
     $precioArt = $_POST['precio_art'];
+    $img_data = null;  // Inicializar la variable de imagen
 
-    // Manejar la imagen si se ha subido una nueva
-    if (!empty($_FILES['img_art']['name'])) {
-        $target_dir = "uploads/";  // Directorio de destino
-        $target_file = $target_dir . basename($_FILES['img_art']['name']);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        // Validar si el archivo es una imagen real
-        $check = getimagesize($_FILES['img_art']['tmp_name']);
-        if ($check !== false) {
-            // Mover la imagen subida a la carpeta de destino
-            if (move_uploaded_file($_FILES['img_art']['tmp_name'], $target_file)) {
-                $imgArt = $target_file;  // Guardar la ruta de la nueva imagen
-            } else {
-                echo "Error al subir la imagen.";
-                exit();
-            }
+    if (!empty($_FILES['img_art']['tmp_name'])) {
+        echo "Imagen subida correctamente."; // Depuración
+        $imageFileType = strtolower(pathinfo($_FILES['img_art']['name'], PATHINFO_EXTENSION));
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'ico'];
+    
+        if (in_array($imageFileType, $allowed_types)) {
+            $img_data = file_get_contents($_FILES['img_art']['tmp_name']);
         } else {
-            echo "El archivo subido no es una imagen.";
+            echo "<script>alert('Solo se permiten archivos de imagen (JPG, JPEG, PNG, GIF).')</script>";
             exit();
         }
     } else {
-        // Si no se subió una nueva imagen, mantener la imagen actual
-        $imgArt = $_POST['img_actual'];
+        echo "No se subió ninguna imagen."; // Depuración
     }
+    
 
-    include ('conexion.php');
-    session_start();
-
+    include('conexion.php');
 
     // Verificar la conexión
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    // Actualizar el registro en la tabla "productos"
-    $sql = "UPDATE productos SET 
-            ID_ART = '$idArt',
-            TIPO_ART = '$tipo_art',
-            NOMBRE_ART = '$nombreArt',
-            MARCA_ART = '$marcaArt',
-            MODELO_ART = '$modeloArt',
-            PRECIO_ART = '$precioArt',
-            IMG_ART = '$imgArt'
-            WHERE ID_ART = '$idArt'";
-
-    if ($conn->query($sql) === true) {
-        echo "El equipo se ha actualizado correctamente";
+    // Construir la consulta con o sin imagen
+    if ($img_data !== null) {
+        // Consulta sin imagen
+        $sql = $conn->prepare("UPDATE productos SET NOMBRE_ART = ?, TIPO_ART = ?, MARCA_ART = ?, MODELO_ART = ?, PRECIO_ART = ? WHERE ID_ART = ?");
+        $sql->bind_param("ssssdi", $nombreArt, $tipo_art, $marcaArt, $modeloArt, $precioArt, $idArt);
+    } else {
+        // Consulta con imagen
+        $sql = $conn->prepare("UPDATE productos SET NOMBRE_ART = ?, TIPO_ART = ?, MARCA_ART = ?, MODELO_ART = ?, PRECIO_ART = ?, IMG_ART = ? WHERE ID_ART = ?");
+        $sql->bind_param("ssssdbi", $nombreArt, $tipo_art, $marcaArt, $modeloArt, $precioArt, $imgArt, $idArt);
+    }
+    
+    // Ejecutar la consulta
+    if ($sql->execute()) {
+        echo "El equipo se ha actualizado correctamente.";
     } else {
         echo "Error al actualizar el equipo: " . $conn->error;
     }
-
-    // Cerrar la conexión
+  
     $conn->close();
-    // Redirigir a la página "equipos.php"
-    header("Location: equipos.php");
+    header("Location: articulos.php");
     exit();
 } else {
-    // Obtener los datos del equipo de la base de datos
-    include ('conexion.php');
+    include('conexion.php');
 
-    // Verificar la conexión
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    // Consultar el equipo por ID
-    $sql = "SELECT * FROM productos WHERE ID_ART = '$id'";
-    $result = $conn->query($sql);
+    $sql = $conn->prepare("SELECT * FROM productos WHERE ID_ART = ?");
+    $sql->bind_param("i", $id);
+    $sql->execute();
+    $result = $sql->get_result();
 
     if ($result->num_rows == 1) {
-        // Obtener los datos del equipo
         $row = $result->fetch_assoc();
         $idArt = $row["ID_ART"];
         $tipo_art = $row["TIPO_ART"];
@@ -96,13 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $marcaArt = $row["MARCA_ART"];
         $modeloArt = $row["MODELO_ART"];
         $precioArt = $row["PRECIO_ART"];
-        $imgArt = $row["IMG_ART"];  // Obtener la ruta de la imagen actual
+        $imgArt = $row["IMG_ART"];
     } else {
-        echo "No se encontró el artículo";
+        echo "No se encontró el artículo.";
         exit();
     }
 
-    // Cerrar la conexión
     $conn->close();
 }
 ?>
@@ -143,21 +129,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="precio_art" name="precio_art" value="<?php echo htmlspecialchars($precioArt, ENT_QUOTES, 'UTF-8'); ?>" required>
         </div>
         
-        <!-- Mostrar la imagen actual -->
         <div>
             <label>Imagen actual:</label><br>
-            <?php
-            $imagen_binaria = $row["IMG_ART"];
-            $imagen_codificada = base64_encode($imagen_binaria);
-            // Mostrar la imagen en la tabla
-            echo "<td class='registro'><img src='data:image/jpeg;base64, $imagen_codificada' alt='Imagen del equipo' width='100' height='100'></td>";
-            ?>
+            <?php echo "<img src='data:image/jpeg;base64," . base64_encode($imgArt) . "' alt='Imagen del equipo' width='100' height='100'>"; ?>
         </div>
         <div>
             <label for="img_art">Cambiar imagen:</label>
             <input type="file" id="img_art" name="img_art" accept="image/*">
-            <!-- Almacenar la ruta de la imagen actual para mantenerla si no se cambia -->
-            <input type="hidden" name="img_actual" value="<?php echo htmlspecialchars($imgArt, ENT_QUOTES, 'UTF-8'); ?>">
         </div>
 
         <div>
