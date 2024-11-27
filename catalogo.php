@@ -38,13 +38,8 @@
                     <div class="carousel">
 
                         <?php
-                        // Conexión a la base de datos
-                        $servername = "sql5.freesqldatabase.com";
-						$user = "sql5730691";
-						$password = "1dGVT2BF99";
-						$dbname = "sql5730691";
-
-                        $conn = new mysqli($servername, $user, $password, $dbname);
+                        include ('conexion.php');
+                        session_start();
 
                         // Verificar la conexión
                         if ($conn->connect_error) {
@@ -97,13 +92,7 @@
                     <div class="carousel">
 
                         <?php
-                        // Conexión a la base de datos
-						$servername = "sql5.freesqldatabase.com";
-						$user = "sql5730691";
-						$password = "1dGVT2BF99";
-						$dbname = "sql5730691";
-
-                        $conn = new mysqli($servername, $user, $password, $dbname);
+                        include ('conexion.php');
 
                         // Verificar la conexión
                         if ($conn->connect_error) {

@@ -43,14 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imgArt = $_POST['img_actual'];
     }
 
-    // Configuración de la conexión a la base de datos
-    $servername = "sql5.freesqldatabase.com";
-    $user = "sql5730691";
-    $password = "1dGVT2BF99";
-    $dbname = "sql5730691";
+    include ('conexion.php');
+    session_start();
 
-    // Crear la conexión
-    $conn = new mysqli($servername, $user, $password, $dbname);
 
     // Verificar la conexión
     if ($conn->connect_error) {
@@ -81,14 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 } else {
     // Obtener los datos del equipo de la base de datos
-    // Configuración de la conexión a la base de datos
-    $servername = "sql5.freesqldatabase.com";
-    $user = "sql5730691";
-    $password = "1dGVT2BF99";
-    $dbname = "sql5730691";
-
-    // Crear la conexión
-    $conn = new mysqli($servername, $user, $password, $dbname);
+    include ('conexion.php');
 
     // Verificar la conexión
     if ($conn->connect_error) {

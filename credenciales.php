@@ -31,27 +31,21 @@
     </form>
 
     <?php
-    $servername = "sql5.freesqldatabase.com";
-    $user = "sql5730691";
-    $password = "1dGVT2BF99";
-    $dbname = "sql5730691";
-
-    // Crear la conexión
-    $conn = new mysqli($servername, $user, $password, $dbname);
+    include ('conexion.php');
 
     // Verificar la conexión
     if ($conn->connect_error) {
         die("Error de conexión: " . $conn->connect_error);
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_articulo"])) {
-        $id_articulo = $_POST["id_articulo"];
-        eliminarRegistro($id_articulo);
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_user"])) {
+        $id_user = $_POST["id_user"];
+        eliminarRegistro($id_user);
     }
 
-    function eliminarRegistro($id_articulo) {
+    function eliminarRegistro($id_user) {
         global $conn;
-        $sql = "DELETE FROM credenciales WHERE ID_USER = '$id_articulo'";
+        $sql = "DELETE FROM credenciales WHERE ID_USER = '$id_user'";
         if ($conn->query($sql) === true) {
             echo "Registro eliminado correctamente.";
         } else {
@@ -59,31 +53,38 @@
         }
     }
 
-    // Construir la consulta SQL base
-    $sql = "SELECT * FROM credenciales";
+    // Inicializar la variable de búsqueda
+    $filtro = "";
 
-    if (isset($_GET["filtro"])) {
-        $filtro = $_GET["filtro"];
-        $sql .= " WHERE ID_USER LIKE '%$filtro%' 
-                  OR TIPO_USER LIKE '%$filtro%' 
-                  OR USER LIKE '%$filtro%'";
-    }    
+    // Verificar si se envió una palabra clave para buscar
+    if (isset($_GET['filtro'])) {
+    $filtro = $_GET['filtro'];
+    }
 
-    $result = $conn->query($sql);
+// Consulta a la tabla "asignaciones" con unión a la tabla "Empleados" y aplicación del filtro de búsqueda
+$sql = "SELECT * FROM credenciales WHERE 
+            ID_USER LIKE '%$filtro%' OR 
+            USER LIKE '%$filtro%' OR 
+            TIPO_USER LIKE '%$filtro%'
+        ORDER BY FECHA_CREACION DESC";
+        
+        $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         echo "<table class='table'>";
-        echo "<tr><th>Numero de usuario</th><th>Tipo de usuario</th><th>Usuario</th><th>Contraseña</th><td colspan='2'><center><a class='button' href='agregar_equipo.php'>Agregar un nuevo registro</a></center></td></tr>";
+        echo "<tr><th>Numero de usuario</th><th>Usuario</th><th>Tipo de usuario</th><th>Contraseña</th><td colspan='2'><center><a class='button' href='alta_credenciales.php'>Agregar un nuevo registro</a></center></td></tr>";
 
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
             echo "<td class='registro'>" . $row["ID_USER"] . "</td>";
-            echo "<td class='registro'>" . $row["TIPO_USER"] . "</td>";
             echo "<td class='registro'>" . $row["USER"] . "</td>";
+            echo "<td class='registro'>" . $row["TIPO_USER"] . "</td>";
             echo "<td class='registro'>" . $row["PASSWORD"] . "</td>";
-            echo "<td><a class='button edit' href='modificar_articulos.php?id=" . $row["ID_USER"] . "'><img class='boton-img' src='img/editar.png'/></a></td>";
-            echo "<td><a class='button delete' onclick='eliminarRegistro(\"" . $row["ID_USER"] . "\")'><img class='boton-img' src='img/eliminar.png'/></a></td>";
-
+            echo "<td><a class='button edit' href='modificar_credenciales.php?id=" . $row["ID_USER"] . "'><img class='boton-img' src='img/editar.png'/></a></td>";
+            echo "<td><form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar este registro?\");'>
+            <input type='hidden' name='id_user' value='" . $row["ID_USER"] . "' />
+            <button type='submit' class='button delete'><img src='img/eliminar.png'/></button>
+            </form></td>";
             echo "</tr>";
         }
 

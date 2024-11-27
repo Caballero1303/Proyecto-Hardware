@@ -17,9 +17,9 @@
 			<font class="logotipo">FIME</font>
 			<font class="logotipo2">TECH</font>
 			<nav>
-				<a href="index.html" class="activo">Inicio</a>
-                <a href="catalogo.html" class="activo">Catalogo</a>
-				<a href="contacto.html">Contacto</a>
+				<a href="index.php" class="activo">Inicio</a>
+                <a href="catalogo.php" class="activo">Catalogo</a>
+				<a href="contacto.php">Contacto</a>
 			</nav>
 		</div>
 	</header>
@@ -36,7 +36,7 @@
 					funcionamiento de cualquier dispositivo electrónico, desde computadoras y teléfonos inteligentes
 					hasta electrodomésticos y sistemas de entretenimiento.
 				</p>
-				<a href="hardware.html"><button role="button" class="boton"><i class="fas fa-info-circle"></i>Más
+				<a href="hardware.php"><button role="button" class="boton"><i class="fas fa-info-circle"></i>Más
 						información</button></a>
 			</div>
 		</div>
@@ -44,14 +44,14 @@
 		<div class="hardwarecontainer">
 			<h1 class="hardware">Hardware de una computadora</h1>
 			<div class="hardwarebutton-container">
-				<a href="cpu.html">Procesador</a>
-				<a href="gpu.html">GPU</a>
-				<a href="ram.html">Memoria RAM</a>
-				<a href="ssd.html">Almacenamiento</a>
-				<a href="motherboard.html">Placa Base</a>
-				<a href="poder.html">Fuente de Poder</a>
-				<a href="liquido.html">Enfriamento</a>
-				<a href="gabinete.html">Gabinete</a>
+				<a href="cpu.php">Procesador</a>
+				<a href="gpu.php">GPU</a>
+				<a href="ram.php">Memoria RAM</a>
+				<a href="ssd.php">Almacenamiento</a>
+				<a href="motherboard.php">Placa Base</a>
+				<a href="poder.php">Fuente de Poder</a>
+				<a href="liquido.php">Enfriamento</a>
+				<a href="gabinete.php">Gabinete</a>
 			</div>
 		</div>
 

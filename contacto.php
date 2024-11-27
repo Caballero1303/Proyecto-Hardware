@@ -17,9 +17,9 @@
 			<font class="logotipo">FIME</font>
 			<font class="logotipo2">TECH</font>
 			<nav>
-				<a href="index.html" class="activo">Inicio</a>
-                <a href="catalogo.html" class="activo">Catalogo</a>
-				<a href="contacto.html">Contacto</a>
+				<a href="index.php" class="activo">Inicio</a>
+                <a href="catalogo.php" class="activo">Catalogo</a>
+				<a href="contacto.php">Contacto</a>
 			</nav>
 		</div>
 	</header>

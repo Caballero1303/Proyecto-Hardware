@@ -47,26 +47,24 @@
     <h1>Agregar Articulo</h1>
 
     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" enctype="multipart/form-data">
-        <div>
-            <label for="ID_USER">ID del artículo:</label>
+    <div>
+            <label for="ID_USER">ID Usuario:</label>
             <input type="text" name="ID_USER" required>
-        </div>
-
-        <div>
-            <label for="USER">Tipo de artículo:</label>
+    </div>
+    <div>
+            <label for="USER">Usuario:</label>
             <input type="text" name="USER" required>
         </div>
 
         <div>
-            <label for="TIPO_USER">Nombre del artículo:</label>
+            <label for="TIPO_USER">Tipo de Usuario:</label>
             <input type="text" name="TIPO_USER" required>
         </div>
 
         <div>
-            <label for="PASSWORD">Marca del artículo:</label>
+            <label for="PASSWORD">Contraseña:</label>
             <input type="text" name="PASSWORD" required>
         </div>
-
         <div>
             <input type="submit" value="Agregar">
         </div>
@@ -89,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $USER = $_POST["USER"];
     $TIPO_USER = $_POST["TIPO_USER"];
     $PASSWORD = $_POST["PASSWORD"];
-    
         // Consulta SQL para verificar si el campo ID_USER está duplicado
         $check_duplicate_sql = "SELECT ID_USER FROM credenciales WHERE ID_USER = '$ID_USER'";
         $duplicate_result = $conn->query($check_duplicate_sql);
@@ -97,9 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($duplicate_result->num_rows > 0) {
             echo '<script>alert("El ID de artículo \'' . $ID_USER . '\' ya existe. Por favor, ingresa otro ID.");</script>';
         } else {
-            // Consulta SQL para insertar un nuevo registro en la tabla "productos"
-            $insert_sql = "INSERT INTO productos (ID_USER, USER, TIPO_USER, PASSWORD)
-                    VALUES ('$ID_USER', '$USER', '$TIPO_USER', '$PASSWORD')";
+            // Consulta SQL para insertar un nuevo registro en la tabla "credenciales"
+            $insert_sql = "INSERT INTO credenciales (USER, TIPO_USER, PASSWORD,FECHA_CREACION)
+                    VALUES ('$USER', '$TIPO_USER', '$PASSWORD',NOW())";
 
             if ($conn->query($insert_sql) === TRUE) {
                 echo '<script>alert("Registro insertado correctamente.");</script>';
@@ -107,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>alert("Error al insertar el registro: ' . $conn->error . '");</script>';
             }
         }
-    }
+}
 
 // Cerrar la conexión
 $conn->close();
