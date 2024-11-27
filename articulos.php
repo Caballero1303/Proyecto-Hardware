@@ -70,7 +70,7 @@
 
     if ($result->num_rows > 0) {
         echo "<table class='table'>";
-        echo "<tr><th>Numero de articulo</th><th>Tipo de articulo</th><th>Articulo</th><th>Marca</th><th>Modelo</th><th>Precio</th><th>Imagen</th><td colspan='2'><center><a class='button' href='agregar_equipo.php'>Agregar un nuevo registro</a></center></td></tr>";
+        echo "<tr><th>Numero de articulo</th><th>Tipo de articulo</th><th>Articulo</th><th>Marca</th><th>Modelo</th><th>Precio</th><th>Imagen</th><td colspan='2'><center><a class='button' href='alta_articulos.php'>Agregar un nuevo registro</a></center></td></tr>";
 
         while ($row = $result->fetch_assoc()) {
             echo "<tr>";
