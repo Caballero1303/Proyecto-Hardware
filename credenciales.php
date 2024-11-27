@@ -91,6 +91,7 @@ $sql = "SELECT * FROM credenciales WHERE
         echo "</table>";
     } else {
         echo "No se encontraron registros.";
+        echo "<center><a class='button' href='alta_credenciales.php'>Agregar un nuevo registro</a>";
     }
 
     $conn->close();
