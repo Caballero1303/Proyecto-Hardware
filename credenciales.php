@@ -31,13 +31,7 @@
     </form>
 
     <?php
-    $servername = "sql5.freesqldatabase.com";
-    $user = "sql5730691";
-    $password = "1dGVT2BF99";
-    $dbname = "sql5730691";
-
-    // Crear la conexión
-    $conn = new mysqli($servername, $user, $password, $dbname);
+    include ('conexion.php');
 
     // Verificar la conexión
     if ($conn->connect_error) {
